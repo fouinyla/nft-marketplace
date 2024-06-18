@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract NFTTrader {
@@ -24,7 +24,7 @@ contract NFTTrader {
         address contractAddr,
         uint256 tokenId
     ) public {
-        ERC1155 token = ERC1155(contractAddr);
+        IERC1155 token = IERC1155(contractAddr);
         require(
             token.balanceOf(msg.sender, tokenId) > 0,
             "caller must own given nft token"
@@ -59,8 +59,7 @@ contract NFTTrader {
 
         usdtToken.transferFrom(msg.sender, item.seller, totalPrice);
 
-        ERC1155 token = ERC1155(contractAddr);
-        token.safeTransferFrom(item.seller, msg.sender, tokenId, amount, "");
+        IERC1155(contractAddr).safeTransferFrom(item.seller, msg.sender, tokenId, amount, "");
     }
 
     // function withdraw(uint256 amount, address payable destAddr) public {
